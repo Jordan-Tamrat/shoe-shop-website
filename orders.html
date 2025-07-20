@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Habesh Shoe House | Orders</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#ffffff'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-secondary text-primary font-sans flex flex-col min-h-screen">
+ 
+  <header class="bg-primary p-4 text-white">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold cursor-pointer" onclick="location.href='index.html'">Habesh Shoe House</h1>
+      <nav class="space-x-4">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="products.html" class="hover:underline">Shop</a>
+        <a href="cart.html" class="hover:underline">Cart</a>
+        <a href="orders.html" class="mx-2 hover:underline">Orders</a>
+      </nav>
+    </div>
+  </header>
+
+ 
+  <main class="container mx-auto px-4 py-8 flex-grow">
+    <h2 class="text-3xl font-bold mb-6">Your Orders</h2>
+    <div id="orders-list" class="space-y-4 mb-6"></div>
+
+    
+    <div class="text-center mt-8">
+      <button onclick="deleteAllOrders()"
+              class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded transition">
+        Delete All Order History
+      </button>
+    </div>
+  </main>
+
+  <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+  <div class="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
+    <h3 class="text-xl font-semibold mb-4 text-primary">Confirm Deletion</h3>
+    <p class="mb-6 text-gray-700">Are you sure you want to delete all order history?</p>
+    <div class="flex justify-center space-x-4">
+      <button onclick="hideModal()" class="px-4 py-2 bg-gray-300 text-primary rounded hover:bg-gray-400">Cancel</button>
+      <button onclick="confirmDelete()" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="bg-gray-100 text-center p-4 text-sm text-primary mt-auto">
+     &copy; <span id="year"></span> Ethiopian Market. All rights reserved.
+  </footer>
+
+  <script>
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const ordersList = document.getElementById('orders-list');
+
+    if (orders.length === 0) {
+      ordersList.innerHTML = '<p>No orders have been placed yet.</p>';
+    } else {
+      orders.forEach((order, index) => {
+        let total = order.total;
+        if (!total && Array.isArray(order.items)) {
+          total = order.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+        }
+
+        const div = document.createElement('div');
+        div.className = 'border border-primary p-4 rounded shadow bg-white';
+        div.innerHTML = `
+          <h4 class="text-lg font-semibold mb-2">Order #${index + 1}</h4>
+          <ul class="list-disc pl-6 mb-2">
+            ${order.items.map(item => `
+              <li>
+                ${item.name} - ${item.qty} x ETB ${item.price}
+                <br/>
+                <span class="text-sm text-gray-600">Size: ${item.size || 'N/A'}, Color: ${item.color || 'N/A'}</span>
+              </li>
+            `).join('')}
+          </ul>
+          <p class="font-bold">Total: ETB ${total}</p>
+        `;
+        ordersList.appendChild(div);
+      });
+    }
+
+   function deleteAllOrders() {
+  document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function hideModal() {
+  document.getElementById('confirmModal').classList.add('hidden');
+}
+
+function confirmDelete() {
+  localStorage.removeItem('orders');
+  hideModal();
+  location.reload();
+}
+
+ document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

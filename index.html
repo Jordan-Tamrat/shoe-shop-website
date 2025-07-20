@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habesh Shoe House | Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#ffffff',
+            lightGray: '#f9fafb'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-secondary text-primary font-sans flex flex-col min-h-screen">
+  <header class="bg-primary p-4 text-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold cursor-pointer" onclick="location.href='index.html'">Habesh Shoe House</h1>
+      <nav class="space-x-4">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="products.html" class="hover:underline">Shop</a>
+        <a href="cart.html" class="hover:underline">Cart</a>
+        <a href="orders.html" class="mx-2 hover:underline">Orders</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <section class="bg-lightGray py-16 px-4 animate-fadeIn">
+  <div class="container mx-auto flex flex-col md:flex-row items-center gap-12">
+    <div class="md:w-1/2">
+      <h2 class="text-4xl font-bold mb-4">Step into Style</h2>
+      <p class="mb-6 text-gray-700">Discover top-quality Ethiopian and global shoe brands. Walk confidently with elegance and comfort.</p>
+      <a href="products.html" class="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-blue-700 transition duration-200">Start Shopping</a>
+    </div>
+    <div class="md:w-1/2">
+      <img src="Image/Showcase shoes.jpg" alt="Showcase Shoes" class="w-full h-96 object-cover rounded shadow-md" />
+    </div>
+  </div>
+</section>
+
+
+    <section class="container mx-auto px-4 py-12">
+      <h3 class="text-3xl font-bold mb-8 text-center">Featured Products</h3>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Nike Air Max -->
+<div class="bg-white rounded-lg shadow hover:shadow-lg transform hover:scale-105 transition duration-300 p-4 text-center">
+  <img src="Image/Nike air max.jpg" class="mx-auto mb-4 rounded h-72 w-full object-cover">
+  <h4 class="text-xl font-semibold">Nike Air Max</h4>
+  <p class="text-gray-600">Comfort and style for everyday wear.</p>
+  <button onclick='viewDetail({
+      id: "nike1",
+      name: "Nike Air Max",
+      description: "Nike Air Max offers ultimate cushioning and street-ready style. Perfect for daily walks and active wear.",
+      price: 3500,
+      image: "Image/Nike air max.jpg",
+      sizes: ["40", "41", "42", "43", "44"],
+      colors: ["Black", "White", "Red"]
+    })' 
+    class="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+    View Detail
+  </button>
+</div>
+
+<!-- Adidas Runner -->
+<div class="bg-white rounded-lg shadow hover:shadow-lg transform hover:scale-105 transition duration-300 p-4 text-center">
+  <img src="Image/Adidas runner shoes.jpg" class="mx-auto mb-4 rounded h-72 w-full object-cover">
+  <h4 class="text-xl font-semibold">Adidas Runner</h4>
+  <p class="text-gray-600">Designed for performance and support.</p>
+  <button onclick='viewDetail({
+      id: "adidas1",
+      name: "Adidas Runner",
+      description: "The Adidas Runner is engineered for high-performance athletes and comfort-seekers. Lightweight and durable.",
+      price: 4000,
+      image: "Image/Adidas runner shoes.jpg",
+      sizes: ["39", "40", "41", "42"],
+      colors: ["Blue", "Gray", "Neon Green"]
+    })' 
+    class="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+    View Detail
+  </button>
+</div>
+
+<!-- Puma Street -->
+<div class="bg-white rounded-lg shadow hover:shadow-lg transform hover:scale-105 transition duration-300 p-4 text-center">
+  <img src="Image/Puma.jpg" class="mx-auto mb-4 rounded h-72 w-full object-cover">
+  <h4 class="text-xl font-semibold">Puma Street</h4>
+  <p class="text-gray-600">Urban fashion with long-lasting comfort.</p>
+  <button onclick='viewDetail({
+      id: "puma1",
+      name: "Puma Street",
+      description: "Puma Street shoes combine urban streetwear fashion with everyday comfort and durability.",
+      price: 3200,
+      image: "Image/Puma.jpg",
+      sizes: ["38", "40", "41", "43"],
+      colors: ["Black", "Beige", "Green"]
+    })' 
+    class="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+    View Detail
+  </button>
+</div>
+
+</div>
+</section>
+
+    <section class="bg-lightGray py-12 px-4">
+      <h3 class="text-3xl font-bold text-center mb-8">What Our Customers Say</h3>
+      <div class="container mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <p class="text-gray-700 italic">"Great quality shoes and fast delivery. Will definitely shop again!"</p>
+          <p class="mt-4 font-semibold text-primary">— Amanuel T.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <p class="text-gray-700 italic">"Stylish and comfortable. I love the Ethiopian designs!"</p>
+          <p class="mt-4 font-semibold text-primary">— Hanna G.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <p class="text-gray-700 italic">"Very secure checkout and excellent customer service."</p>
+          <p class="mt-4 font-semibold text-primary">— Dawit M.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-12">
+      <h3 class="text-3xl font-bold text-center mb-8">Why Shop With Us</h3>
+      <div class="grid md:grid-cols-3 gap-8 text-center">
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <h4 class="text-xl font-semibold mb-2">Authentic Brands</h4>
+          <p class="text-gray-600">We partner directly with top brands to bring you genuine, high-quality products.</p>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <h4 class="text-xl font-semibold mb-2">Fast & Reliable Delivery</h4>
+          <p class="text-gray-600">Enjoy swift and dependable shipping throughout Ethiopia.</p>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <h4 class="text-xl font-semibold mb-2">Secure Payment</h4>
+          <p class="text-gray-600">Shop confidently with our secure and encrypted checkout system.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-gray-100 text-center p-4 text-sm text-primary mt-auto">
+    &copy; <span id="year"></span> Ethiopian Market. All rights reserved.
+  </footer>
+
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 1s ease-out;
+    }
+  </style>
+  <script>
+  function viewDetail(product) {
+    localStorage.setItem("selectedProduct", JSON.stringify(product));
+    window.location.href = "contentdetails.html";
+  }
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habesh Shoe House | Shoes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A8A',
+            secondary: '#ffffff'
+          },
+          boxShadow: {
+            card: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          },
+          borderRadius: {
+            card: '1rem'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .product-card {
+      transition: transform 0.2s ease-in-out;
+    }
+    .product-card:hover {
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body class="bg-secondary text-primary font-sans flex flex-col min-h-screen">
+  <header class="bg-primary p-4 text-white">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Habesh Shoe House</h1>
+      <nav class="space-x-4">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="products.html" class="hover:underline">Shop</a>
+        <a href="cart.html" class="hover:underline">Cart</a>
+        <a href="orders.html" class="mx-2 hover:underline">Orders</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8 flex-grow">
+    <h2 class="text-3xl font-bold mb-6 text-center">Shop Shoes</h2>
+    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </main>
+
+  <footer class="bg-gray-100 text-center p-4 text-sm text-primary mt-auto">
+     &copy; <span id="year"></span> Ethiopian Market. All rights reserved.
+  </footer>
+
+  <script>
+    const products = [
+      { id: 1, name: "Leather Shoes", price: 1200, image: "Image/Leather_shoes.jpg", sizes: ["39", "40", "41"], colors: ["Black", "Brown"] },
+      { id: 2, name: "Gucci Shoes", price: 950, image: "Image/Gucci.jpg", sizes: ["38", "39", "40"], colors: ["White", "Green"] },
+      { id: 3, name: "Tela Sandals", price: 700, image: "Image/Sandals.jpg", sizes: ["37", "38", "39"], colors: ["Red", "Blue"] },
+      { id: 4, name: "Nike Air Max", price: 4500, image: "Image/Nike air max 2.jpg", sizes: ["40", "41", "42"], colors: ["Black", "White"] },
+      { id: 5, name: "Adidas Ultra Boost", price: 5000, image: "Image/Adidas ultraboost.jpg", sizes: ["41", "42", "43"], colors: ["Gray", "Neon"] },
+      { id: 6, name: "Puma Running Shoes", price: 3800, image: "Image/Puma running shoes.jpg", sizes: ["39", "40", "41"], colors: ["Green", "Black"] }
+    ];
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function saveCart() {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function renderProducts() {
+      const list = document.getElementById("product-list");
+      list.innerHTML = "";
+      products.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product-card border border-primary p-4 rounded-card shadow-card text-center flex flex-col hover:shadow-lg";
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" class="w-60 h-60 object-cover mb-4 mx-auto rounded shadow" />
+
+          <h3 class="text-lg font-semibold">${product.name}</h3>
+          <p class="my-2">ETB ${product.price}</p>
+
+          <select id="size-${product.id}" class="border rounded p-1 mb-2 w-full">
+            <option value="">Select Size</option>
+            ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join("")}
+          </select>
+
+          <select id="color-${product.id}" class="border rounded p-1 mb-2 w-full">
+            <option value="">Select Color</option>
+            ${product.colors.map(color => `<option value="${color}">${color}</option>`).join("")}
+          </select>
+
+          <div class="flex items-center justify-center gap-2 mb-2">
+            <span class="font-semibold">Quantity:</span>
+            <div class="flex border rounded overflow-hidden">
+              <button type="button" class="px-3 py-1 text-primary font-bold bg-gray-100 hover:bg-gray-200" onclick="changeQty(${product.id}, -1)">−</button>
+              <input type="number" id="qty-${product.id}" value="1" min="1" class="w-12 text-center border-l border-r border-gray-300" readonly />
+              <button type="button" class="px-3 py-1 text-primary font-bold bg-gray-100 hover:bg-gray-200" onclick="changeQty(${product.id}, 1)">+</button>
+            </div>
+          </div>
+
+          <button 
+            id="btn-${product.id}" 
+            class="bg-primary text-white px-4 py-2 rounded opacity-50 cursor-not-allowed" 
+            disabled
+            onclick="addToCart(${product.id})">
+            Add to Cart
+          </button>
+        `;
+
+        list.appendChild(div);
+
+        const sizeSelect = document.getElementById(`size-${product.id}`);
+        const colorSelect = document.getElementById(`color-${product.id}`);
+        const qtyInput = document.getElementById(`qty-${product.id}`);
+        const addButton = document.getElementById(`btn-${product.id}`);
+
+        [sizeSelect, colorSelect].forEach(select => {
+          select.addEventListener("change", () => {
+            const size = sizeSelect.value;
+            const color = colorSelect.value;
+            const qty = parseInt(qtyInput.value);
+            if (size && color && qty > 0) {
+              addButton.disabled = false;
+              addButton.classList.remove("opacity-50", "cursor-not-allowed");
+            } else {
+              addButton.disabled = true;
+              addButton.classList.add("opacity-50", "cursor-not-allowed");
+            }
+          });
+        });
+      });
+    }
+
+    function changeQty(id, delta) {
+      const qtyInput = document.getElementById(`qty-${id}`);
+      let value = parseInt(qtyInput.value);
+      if (isNaN(value)) value = 1;
+      value += delta;
+      if (value < 1) value = 1;
+      qtyInput.value = value;
+
+      // Check if size & color are selected to enable button
+      const sizeSelect = document.getElementById(`size-${id}`);
+      const colorSelect = document.getElementById(`color-${id}`);
+      const addButton = document.getElementById(`btn-${id}`);
+      if (sizeSelect.value && colorSelect.value) {
+        addButton.disabled = false;
+        addButton.classList.remove("opacity-50", "cursor-not-allowed");
+      }
+    }
+    function showToast(message, color = 'bg-green-600') {
+  const toast = document.getElementById('toast');
+  toast.className = `fixed top-4 right-4 text-white px-4 py-2 rounded shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50 ${color}`;
+  toast.textContent = message;
+
+  // Enable visibility & pointer events during show
+  toast.classList.remove('opacity-0', 'pointer-events-none');
+  toast.classList.add('opacity-100');
+
+  setTimeout(() => {
+    toast.classList.remove('opacity-100');
+    toast.classList.add('opacity-0', 'pointer-events-none');
+  }, 3000);
+}
+
+    function addToCart(id) {
+      const size = document.getElementById(`size-${id}`).value;
+      const color = document.getElementById(`color-${id}`).value;
+      const qty = parseInt(document.getElementById(`qty-${id}`).value);
+      if (!size || !color || qty < 1) return;
+
+      const product = products.find(p => p.id === id);
+      const cartItem = { ...product, size, color, qty };
+
+      const exists = cart.find(item => item.id === id && item.size === size && item.color === color);
+      if (!exists) {
+  cart.push(cartItem);
+  saveCart();
+  showToast(`${product.name} (${size}, ${color}) x${qty} added to cart.`, 'bg-green-600');
+} else {
+  showToast(`This product in the selected size and color is already in your cart.`, 'bg-yellow-600');
+}
+    }
+
+    window.onload = renderProducts;
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+ <div id="toast" class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50"></div>
+</body>
+</html>

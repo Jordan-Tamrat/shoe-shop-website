@@ -45,7 +45,7 @@
   </main>
 
   <footer class="bg-gray-100 text-center p-4 text-sm text-primary mt-auto">
-    &copy; 2025 Ethiopian Market. Bole, Addis Ababa | +251 911 234 567
+     &copy; <span id="year"></span> Ethiopian Market. All rights reserved.
   </footer>
 
   <script>
@@ -85,6 +85,7 @@
 
       localStorage.removeItem('order');
     }
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
